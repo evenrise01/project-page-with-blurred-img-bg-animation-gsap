@@ -66,7 +66,7 @@ export default function Home() {
       return element;
     }
 
-    function createProjectDetails(activeItem, index) {
+    function createProjectDetails(activeItem, index: number) {
       const newProjectDetails = createElementWithClass(
         "div",
         "project-details"
@@ -109,7 +109,7 @@ export default function Home() {
       };
     }
 
-    function handleItemClick(index) {
+    function handleItemClick(index: number) {
       if (index === activeItemIndex || isAnimating) return;
 
       isAnimating = true;
@@ -152,7 +152,7 @@ export default function Home() {
           duration: 1,
           delay: 0.5,
           ease: "power2.inOut",
-          onComplete: () => blurryPrev?.removeChild(currentBlurryImg),
+          onComplete: () => {blurryPrev?.removeChild(currentBlurryImg)},
         });
 
         gsap.to(newBlurryImg, {
@@ -171,7 +171,7 @@ export default function Home() {
 
         gsap.to(currentProjectImg, {
           onStart: () => {
-            gsap.to(currentProjectImgElement, {
+            gsap.to(currentProjectImgElement!, {
               scale: 2,
               duration: 1,
               ease: "power4.in",
@@ -183,7 +183,6 @@ export default function Home() {
           ease: "power4.in",
           onComplete: () => {
             document.querySelector(".project-details")?.remove();
-            currentBlurryImg.remove();
 
             const { newProjectDetails, newProjectImg, infoP } =
               createProjectDetails(activeItem, index);
