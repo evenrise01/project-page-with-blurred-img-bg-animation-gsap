@@ -169,7 +169,7 @@ nav {
 }
 
 .gallery {
-  width: 200px;
+  width: 150px;
   height: 300vh;
   display: flex;
   flex-direction: column;
