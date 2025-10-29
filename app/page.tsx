@@ -1,6 +1,65 @@
+"use client";
+import { galleryItems } from "./constants/data";
 import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { SplitText } from "gsap/all";
 
+gsap.registerPlugin(SplitText);
 export default function Home() {
+  useGSAP(() => {
+    const gallery = document.querySelector(".gallery");
+    const blurryPrev = document.querySelector(".blurry-prev");
+    const projectPreview = document.querySelector(".project-preview");
+    const itemCount = galleryItems.length;
+
+    let activeItemIndex = 0;
+    let isAnimating = false;
+
+    function createSplitText(element: gsap.DOMTarget) {
+      const splitText = new SplitText(element, { type: "lines" });
+    
+      splitText.lines.forEach((line) => {
+        const lineDiv = document.createElement("div");
+        lineDiv.className = "line";
+        
+        const parent = line.parentElement;
+        if (!parent) return;
+        
+        lineDiv.appendChild(line);
+        parent.appendChild(lineDiv);
+      });
+    }
+
+    const initialInfoText = document.querySelector(".info p");
+    if (initialInfoText) {
+      createSplitText(initialInfoText);
+    }
+
+    const elementsToAnimate = document.querySelectorAll(
+      ".title h1, .info p, .line span, .credits p, .director p, .cinematographer p"
+    );
+    gsap.set(elementsToAnimate, {
+      y: 0,
+    });
+
+    for(let i = 0; i < itemCount; i++){
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("item"); // Add the 'item' class
+      
+      if(i === 0) itemDiv.classList.add("active");
+      
+      // Create a NEW img element for each item
+      const img = document.createElement("img");
+      img.src = `/img-${i+1}.jpg`;
+      img.alt = galleryItems[i].title;
+    
+      itemDiv.appendChild(img);
+      itemDiv.dataset.index = String(i);
+      itemDiv.addEventListener("click", () => handleItemClick(i));
+      gallery?.appendChild(itemDiv);
+    }
+  }, {});
   return (
     <>
       <div className="container">
